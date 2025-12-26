@@ -10,12 +10,31 @@ const app = express();
 connectDB();
 
 // Middleware
+const allowedOrigins = [
+    "http://localhost:5173",                                      // Local development
+    "https://mern-to-do-3zzw.vercel.app",                        // Your main production link
+    /\.vercel\.app$/                                             // ANY link ending in .vercel.app (Regex)
+];
+
 app.use(cors({
-    origin: ["https://mern-to-do-3zzw.vercel.app", 
-             "https://mern-to-do-3zzw-pnxzxz14m-jeewanlamsals-projects.vercel.app"],
+    origin: function (origin, callback) {
+        // allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        const isAllowed = allowedOrigins.some(allowed => {
+            if (allowed instanceof RegExp) return allowed.test(origin);
+            return allowed === origin;
+        });
+
+        if (isAllowed) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE"]
-})); // Allows your frontend to talk to this backend
+}));
 app.use(express.json()); // Parses incoming JSON requests
 
 // Route Links
