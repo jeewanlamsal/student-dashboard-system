@@ -11,8 +11,10 @@ connectDB();
 
 // Middleware
 app.use(cors({
-    origin: "https://mern-to-do-3zzw.vercel.app", 
-    credentials: true
+    origin: ["https://mern-to-do-3zzw.vercel.app", 
+             "https://mern-to-do-3zzw-pnxzxz14m-jeewanlamsals-projects.vercel.app"],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
 })); // Allows your frontend to talk to this backend
 app.use(express.json()); // Parses incoming JSON requests
 
