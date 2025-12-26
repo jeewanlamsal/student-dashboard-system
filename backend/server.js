@@ -10,7 +10,11 @@ const app = express();
 connectDB();
 
 // Middleware
-app.use(cors()); // Allows your frontend to talk to this backend
+app.use(cors({
+    origin: ["http://localhost:5173", "https://mern-to-do-3zzw.vercel.app"], 
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+})); // Allows your frontend to talk to this backend
 app.use(express.json()); // Parses incoming JSON requests
 
 // Route Links
